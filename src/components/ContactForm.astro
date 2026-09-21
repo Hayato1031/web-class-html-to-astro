@@ -1,0 +1,17 @@
+---
+const base = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+---
+<div class="contact-box contact-form-box">
+  <p class="contact-placeholder-title">お問い合わせフォーム</p>
+  <p class="contact-placeholder-desc">授業用デモです。実在する個人情報は入力せず、架空の名前・example.comのメールアドレスで試してください。</p>
+  <div class="contact-iframe-wrap">
+    <iframe
+      title="お問い合わせ Google フォーム"
+      src="https://docs.google.com/forms/d/e/1FAIpQLSc-I74-Md7ukiCghqBUq7YkPcud8TyMVmIlNDbt6lE1Gw9T6w/viewform?embedded=true"
+      loading="lazy"
+      allowfullscreen
+    ></iframe>
+  </div>
+  <a class="contact-form-link" href="https://docs.google.com/forms/d/e/1FAIpQLSc-I74-Md7ukiCghqBUq7YkPcud8TyMVmIlNDbt6lE1Gw9T6w/viewform" target="_blank" rel="noreferrer">フォームを別タブで開く →</a>
+  <a class="contact-custom-link" href={`${base}contact-custom/`}>独自デザインの例 →</a>
+</div>

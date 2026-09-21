@@ -1,0 +1,13 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ArticleList from '../../components/ArticleList.astro';
+import { cmsArticleCategory, cmsArticleDate, fetchCMSNews, formatCMSDate } from '../../lib/microcms';
+const base = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+const cmsArticles = await fetchCMSNews();
+const articles = cmsArticles.map((article) => ({ title: article.title || '無題の記事', date: cmsArticleDate(article), displayDate: formatCMSDate(article), category: cmsArticleCategory(article), summary: article.summary || '', href: `${base}cms-news/${article.id}/` }));
+---
+<Layout title="CMS記事 - Taro Keio">
+  <section class="news-index cms-news-page">
+    <ArticleList articles={articles} cmsOnly />
+  </section>
+</Layout>

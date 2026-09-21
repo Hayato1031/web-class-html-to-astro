@@ -1,0 +1,32 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const base = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+---
+<Layout title="お問い合わせフォーム（独自デザイン例） - Taro Keio">
+  <section class="custom-contact-page">
+    <div class="section-header">
+      <h1 class="section-title">お問い合わせ</h1>
+      <p class="section-desc">独自デザインのGoogleフォーム送信例</p>
+    </div>
+    <div class="custom-contact-box">
+      <p class="contact-placeholder-desc">授業用デモです。実在する個人情報は入力せず、架空の名前とexample.comのメールアドレスで試してください。</p>
+      <form method="POST" action="https://docs.google.com/forms/d/e/1FAIpQLSc-I74-Md7ukiCghqBUq7YkPcud8TyMVmIlNDbt6lE1Gw9T6w/formResponse" target="_blank" class="custom-contact-form">
+        <div class="custom-form-field">
+          <label for="contact-name">お名前</label>
+          <input id="contact-name" name="entry.865914851" type="text" required />
+        </div>
+        <div class="custom-form-field">
+          <label for="contact-email">返信先メール</label>
+          <input id="contact-email" name="entry.1002490609" type="email" required />
+        </div>
+        <div class="custom-form-field">
+          <label for="contact-message">お問い合わせ本文</label>
+          <textarea id="contact-message" name="entry.107508266" rows="7" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary custom-submit">Googleフォームへ送信</button>
+      </form>
+      <p class="custom-contact-note">送信後は別タブで開いたGoogleの画面に表示される結果を確認してください。</p>
+      <a class="contact-form-link" href={`${base}#contact`}>標準フォームへ戻る →</a>
+    </div>
+  </section>
+</Layout>
