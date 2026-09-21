@@ -17,8 +17,8 @@
 - `src/styles/global.css`：HTML版の配色、文字、余白、レスポンシブCSS。
 - `src/pages/news/*.md`：5記事の本文とfrontmatter。
 - `src/pages/news/index.astro`：Markdownを `import.meta.glob` で読み込む記事一覧。
-- `src/pages/cms-news/`：ブラウザでmicroCMSの公開記事を取得する一覧と固定詳細ページ。
-- `src/lib/microcms.ts`：microCMSの全件ページング、タイムアウト、再試行処理。
+- `src/pages/cms-news/`：ビルド時に取得したmicroCMS記事の一覧と、`/cms-news/[id]/` の静的詳細ページ。
+- `src/lib/microcms.ts`：microCMSの全件ページングと、設定・API・応答異常時にビルドを停止する取得処理。
 
 ## ローカル起動
 
@@ -67,7 +67,7 @@ Astro移行前のHTML版はGitの `b48d3ef`（`HTML版を保存（Astro移行前
 
 ## GitHub Pages
 
-`astro.config.mjs` は `site: 'https://hayato1031.github.io'`、`base: '/web-class-html-to-astro'`、`output: 'static'` です。`.github/workflows/deploy.yml` は `main` へのpushまたは `workflow_dispatch` で、GitHub Pages環境へAstroの静的ビルドを公開します。
+`astro.config.mjs` は `site: 'https://hayato1031.github.io'`、`base: '/web-class-html-to-astro'`、`output: 'static'` です。`.github/workflows/deploy.yml` は `main` へのpush、`workflow_dispatch`、`repository_dispatch`（`microcms`）の3種類で、GitHub Pages環境へAstroの静的ビルドを公開します。
 
 GitHubリポジトリの Settings > Pages > Build and deployment で Source を **GitHub Actions** に切り替えてから、`main`へpushするか Actions の `workflow_dispatch` を実行してください。公開前は移行用ブランチで表示とビルドを確認し、変更をcommitしてからmainへ取り込みます。
 
