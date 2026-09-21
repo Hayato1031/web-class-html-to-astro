@@ -4,8 +4,6 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-  repository_dispatch:
-    types: [microcms]
 
 permissions:
   contents: read
@@ -25,8 +23,8 @@ jobs:
       - name: Build with Astro
         uses: withastro/action@v6
         env:
-          MICROCMS_SERVICE_DOMAIN: ${{ secrets.MICROCMS_SERVICE_DOMAIN }}
-          MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
+          PUBLIC_MICROCMS_SERVICE_DOMAIN: ${{ secrets.MICROCMS_SERVICE_DOMAIN }}
+          PUBLIC_MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
         with:
           node-version: 24
   deploy:

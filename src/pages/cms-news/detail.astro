@@ -1,0 +1,22 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const base = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+---
+<Layout title="CMS記事 - Taro Keio">
+  <section class="news-detail-page">
+    <div class="detail-view active cms-detail">
+      <a class="back-btn" href={`${base}cms-news/`}>← CMS記事一覧へ戻る</a>
+      <div class="cms-status" data-cms-detail-status aria-live="polite">CMS記事を読み込み中...</div>
+      <div data-cms-detail-content hidden><div class="article-meta"><span class="article-category" data-cms-category></span><time data-cms-date></time></div><h1 class="detail-title" data-cms-title></h1><p class="article-summary news-summary" data-cms-summary></p><div class="detail-body cms-body" data-cms-body></div></div>
+    </div>
+  </section>
+</Layout>
+<script>
+  import { cmsArticleCategory, cmsArticleDate, fetchCMSNews, formatCMSDate } from '../../lib/microcms';
+  const status = document.querySelector('[data-cms-detail-status]');
+  const content = document.querySelector('[data-cms-detail-content]');
+  const id = new URLSearchParams(window.location.search).get('id');
+  const showError = (message) => { status.replaceChildren(document.createTextNode(`${message} `)); const retry = document.createElement('button'); retry.type = 'button'; retry.className = 'cms-retry-button'; retry.textContent = '再試行'; retry.addEventListener('click', () => window.location.reload()); status.append(retry); };
+  if (!id) status.textContent = '記事IDが指定されていません。';
+  else fetchCMSNews().then((articles) => { const article = articles.find((item) => item.id === id); if (!article) { status.textContent = '指定されたCMS記事が見つかりません。'; return; } const date = document.querySelector('[data-cms-date]'); document.querySelector('[data-cms-category]').textContent = cmsArticleCategory(article); date.textContent = formatCMSDate(article); date.dateTime = cmsArticleDate(article); document.querySelector('[data-cms-title]').textContent = article.title || '無題の記事'; document.querySelector('[data-cms-summary]').textContent = article.summary || ''; document.querySelector('[data-cms-body]').textContent = article.body || ''; content.hidden = false; status.hidden = true; document.title = `${article.title || 'CMS記事'} - Taro Keio`; }).catch((error) => showError(error.message));
+</script>

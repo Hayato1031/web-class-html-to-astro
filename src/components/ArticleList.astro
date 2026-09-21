@@ -26,6 +26,45 @@ const filterId = cmsOnly ? 'cms' : 'all';
   ))}
 </div>
 <script>
+  import { cmsArticleCategory, cmsArticleDate, fetchCMSNews, formatCMSDate } from '../lib/microcms';
+
+  const makeCMSCard = (article) => {
+    const link = document.createElement('a');
+    link.className = 'article-card';
+    link.dataset.articleCategory = cmsArticleCategory(article);
+    link.dataset.articleDate = cmsArticleDate(article);
+    link.href = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/cms-news/detail/?id=${encodeURIComponent(article.id)}`;
+    const main = document.createElement('div');
+    main.className = 'article-main';
+    const meta = document.createElement('div');
+    meta.className = 'article-meta';
+    const category = document.createElement('span');
+    category.className = 'article-category';
+    category.textContent = cmsArticleCategory(article);
+    const date = document.createElement('time');
+    date.dateTime = cmsArticleDate(article);
+    date.textContent = formatCMSDate(article);
+    meta.append(category, date);
+    const title = document.createElement('h3');
+    title.className = 'article-title';
+    title.textContent = article.title || '無題の記事';
+    const summary = document.createElement('p');
+    summary.className = 'article-summary';
+    summary.textContent = article.summary || '';
+    main.append(meta, title, summary);
+    const arrow = document.createElement('div');
+    arrow.className = 'article-arrow';
+    arrow.setAttribute('aria-hidden', 'true');
+    arrow.textContent = '→';
+    link.append(main, arrow);
+    return link;
+  };
+  const sortCards = (list) => list.append(...[...list.querySelectorAll('[data-article-date]')].sort((a, b) => (b.dataset.articleDate || '').localeCompare(a.dataset.articleDate || '')));
+  const applyFilter = (bar, list) => {
+    const active = bar.querySelector('[aria-pressed="true"]')?.dataset.category || 'すべて';
+    list.querySelectorAll('[data-article-category]').forEach((article) => { article.hidden = active !== 'すべて' && article.dataset.articleCategory !== active; });
+  };
+
   document.querySelectorAll('.filter-bar').forEach((bar) => {
     const list = document.querySelector(`[data-articles-list="${bar.dataset.filterId}"]`);
     bar.addEventListener('click', (event) => {
@@ -36,9 +75,39 @@ const filterId = cmsOnly ? 'cms' : 'all';
         item.classList.toggle('active', isActive);
         item.setAttribute('aria-pressed', String(isActive));
       });
-      list.querySelectorAll('[data-article-category]').forEach((article) => {
-        article.hidden = button.dataset.category !== 'すべて' && article.dataset.articleCategory !== button.dataset.category;
-      });
+      applyFilter(bar, list);
     });
+  });
+
+  document.querySelectorAll('[data-articles-list]').forEach(async (list) => {
+    const status = list.previousElementSibling;
+    const bar = document.querySelector(`[data-filter-id="${list.dataset.articlesList}"]`);
+    status.hidden = false;
+    status.textContent = 'CMS記事を読み込み中...';
+    try {
+      const articles = await fetchCMSNews();
+      articles.forEach((article) => list.append(makeCMSCard(article)));
+      sortCards(list);
+      status.hidden = articles.length !== 0 || list.dataset.cmsOnly !== 'true';
+      if (articles.length === 0 && list.dataset.cmsOnly === 'true') status.textContent = 'CMS記事はありません。';
+      else status.textContent = '';
+      if (bar) applyFilter(bar, list);
+      const latest = [...articles].sort((a, b) => cmsArticleDate(b).localeCompare(cmsArticleDate(a)))[0];
+      const latestLink = document.querySelector('[data-latest-article]');
+      if (latest && latestLink && cmsArticleDate(latest) > (latestLink.dataset.latestDate || '')) {
+        latestLink.dataset.latestDate = cmsArticleDate(latest);
+        latestLink.href = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/cms-news/detail/?id=${encodeURIComponent(latest.id)}`;
+        latestLink.querySelector('[data-latest-title]')?.replaceChildren(document.createTextNode(`「${latest.title || '無題の記事'}」`));
+      }
+    } catch (error) {
+      status.hidden = false;
+      status.replaceChildren(document.createTextNode(`${error.message} `));
+      const retry = document.createElement('button');
+      retry.type = 'button';
+      retry.className = 'cms-retry-button';
+      retry.textContent = '再試行';
+      retry.addEventListener('click', () => window.location.reload());
+      status.append(retry);
+    }
   });
 </script>

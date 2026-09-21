@@ -1,0 +1,12 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const base = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+---
+<Layout title="CMS記事 - Taro Keio">
+  <section class="news-detail-page"><div class="detail-view active"><p>CMS記事のURLを移動しました。<a class="back-btn" href={`${base}cms-news/detail/`}>詳細ページを開く</a></p></div></section>
+</Layout>
+<script>
+  const base = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+  const query = window.location.search;
+  window.location.replace(`${base}cms-news/detail/${query}`);
+</script>

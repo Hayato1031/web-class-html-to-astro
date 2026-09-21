@@ -1,12 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ArticleList from '../../components/ArticleList.astro';
-import { cmsArticleCategory, cmsArticleDate, fetchCMSNews, formatCMSDate } from '../../lib/microcms';
 interface ArticleFrontmatter { title: string; date: string; category: string; summary: string; }
 const articleModules = import.meta.glob('./*.md', { eager: true, import: 'frontmatter' }) as Record<string, ArticleFrontmatter>;
 const markdownArticles = Object.entries(articleModules).map(([path, frontmatter]) => ({ ...frontmatter, slug: path.split('/').pop()?.replace(/\.md$/, '') ?? '' }));
-const cmsArticles = await fetchCMSNews();
-const base = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
-const articles = [...markdownArticles, ...cmsArticles.map((article) => ({ title: article.title || '無題の記事', date: cmsArticleDate(article), displayDate: formatCMSDate(article), category: cmsArticleCategory(article), summary: article.summary || '', href: `${base}cms-news/${article.id}/` }))].sort((a, b) => b.date.localeCompare(a.date));
+const articles = markdownArticles.sort((a, b) => b.date.localeCompare(a.date));
 ---
 <Layout title="記事 - Taro Keio"><section class="news-index"><ArticleList articles={articles} /></section></Layout>

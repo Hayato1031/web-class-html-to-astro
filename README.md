@@ -17,8 +17,8 @@
 - `src/styles/global.css`：HTML版の配色、文字、余白、レスポンシブCSS。
 - `src/pages/news/*.md`：5記事の本文とfrontmatter。
 - `src/pages/news/index.astro`：Markdownを `import.meta.glob` で読み込む記事一覧。
-- `src/pages/cms-news/`：ビルド時に取得したmicroCMS記事の一覧と、`/cms-news/[id]/` の静的詳細ページ。
-- `src/lib/microcms.ts`：microCMSの全件ページングと、設定・API・応答異常時にビルドを停止する取得処理。
+- `src/pages/cms-news/`：閲覧時にブラウザJavaScriptで取得するmicroCMS記事の一覧と、`/cms-news/detail/?id=CONTENT_ID` の共通詳細ページ。
+- `src/lib/microcms.ts`：microCMSの全件ページング、タイムアウト、再試行、読み込みエラー処理。
 
 ## ローカル起動
 
@@ -39,9 +39,9 @@ npm run dev
 
 ## microCMS
 
-サービスドメイン `web-class-html-to-astro` の `news` APIをAstroのビルド中だけ取得します。公開記事はトップと `/news/` に既存Markdown記事と混在して日付順で静的生成され、CMS専用一覧は `/cms-news/`、個別詳細は `/cms-news/実際のID/` です。記事の追加・編集後はGitHub Actionsで再ビルドし、Pagesへ反映します。複数ページ取得と設定/APIエラーによるビルド停止に対応しています。
+サービスドメイン `web-class-html-to-astro` の `news` APIを閲覧時にブラウザJavaScriptから取得します。公開記事はトップと `/news/` に既存Markdown記事と混在して日付順で表示され、CMS専用一覧は `/cms-news/`、共通詳細は `/cms-news/detail/?id=CONTENT_ID` です。新規記事は再ビルドなしで詳細URLを開けます。複数ページ取得、読み込み中、0件、取得失敗、再試行、無効ID/404に対応しています。
 
-APIキーはブラウザへ渡さず、`MICROCMS_SERVICE_DOMAIN` と `MICROCMS_API_KEY` をビルド時だけ使います。APIキーは公開記事GETだけの最小権限に設定してください。値は [`.env.example`](.env.example) の例を参考に、実際の `.env` へ用意します。実際のキーや記事データはリポジトリへ書き込みません。
+ブラウザ取得のため `PUBLIC_MICROCMS_SERVICE_DOMAIN` と `PUBLIC_MICROCMS_API_KEY` は閲覧者から見える前提です。APIキーはnewsのGETだけを許可し、書き込み、下書き全取得、公開終了全取得、Management権限は許可しません。値は [`.env.example`](.env.example) の例を参考に、実際の `.env` へ用意します。実際のキーや記事データはリポジトリへ書き込みません。
 
 ## 記事の追加
 
@@ -67,14 +67,14 @@ Astro移行前のHTML版はGitの `b48d3ef`（`HTML版を保存（Astro移行前
 
 ## GitHub Pages
 
-`astro.config.mjs` は `site: 'https://hayato1031.github.io'`、`base: '/web-class-html-to-astro'`、`output: 'static'` です。`.github/workflows/deploy.yml` は `main` へのpush、`workflow_dispatch`、`repository_dispatch`（`microcms`）の3種類で、GitHub Pages環境へAstroの静的ビルドを公開します。
+`astro.config.mjs` は `site: 'https://hayato1031.github.io'`、`base: '/web-class-html-to-astro'`、`output: 'static'` です。`.github/workflows/deploy.yml` はコード公開用に `main` へのpushまたは `workflow_dispatch` で、GitHub Pages環境へAstroの静的ビルドを公開します。
 
 GitHubリポジトリの Settings > Pages > Build and deployment で Source を **GitHub Actions** に切り替えてから、`main`へpushするか Actions の `workflow_dispatch` を実行してください。公開前は移行用ブランチで表示とビルドを確認し、変更をcommitしてからmainへ取り込みます。
 
 ## 公開と更新
 
-コードを変更した場合もmicroCMSの記事追加・編集の場合も、GitHub Actionsで再ビルドしてPagesへ反映します。Workflowは`main`へのpush、手動実行、`repository_dispatch`の`microcms`イベントで同じbuild・Pages deployを実行します。GitHub ActionsのbuildにはRepository secretsの `MICROCMS_SERVICE_DOMAIN` と `MICROCMS_API_KEY` を渡します。
+コードを変更した場合は`main`へのpushまたは`workflow_dispatch`でビルドしてPagesへ公開します。microCMSの記事追加・編集は再ビルド不要で、公開記事URLをブラウザで開くと取得されます。GitHub ActionsのbuildではRepository secretsの `MICROCMS_SERVICE_DOMAIN` と `MICROCMS_API_KEY` を、それぞれ `PUBLIC_MICROCMS_SERVICE_DOMAIN` と `PUBLIC_MICROCMS_API_KEY` としてAstroへ渡します。
 
-microCMS WebhookからGitHub Actionsを起動するためのfine-grained PATは、このリポジトリだけを対象にし、Contentsのread/write権限、30日有効で用意します。Webhookのeventは `microcms` です。PATの値やAPIキーはREADMEやリポジトリへ書きません。
+CMSの記事追加・編集ではWebhookもGitHub Actionsの実行も不要です。Secretsに保管していても、`PUBLIC_`として公開JavaScriptに組み込んだGET限定キーは閲覧者から見えます。
 
 公開URL：https://hayato1031.github.io/web-class-html-to-astro/
