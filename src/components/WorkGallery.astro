@@ -1,0 +1,58 @@
+---
+import { works } from '../data/works';
+---
+<div id="works-list" class="works-grid">
+  {works.map((work) => (
+    <article class="work-card" data-work-id={work.id} tabindex="0" role="button" aria-label={`${work.title}の詳細を見る`}>
+      <div class="work-thumb" set:html={work.svg}></div>
+      <div class="work-content">
+        <div class="work-meta"><span class="work-tag">{work.year}</span><span>・</span><span>{work.role}</span></div>
+        <h3 class="work-title">{work.title}</h3>
+        <p class="work-summary">{work.summary}</p>
+      </div>
+    </article>
+  ))}
+</div>
+<div id="work-detail-view" class="detail-view" hidden>
+  <button class="back-btn" type="button" data-work-close>← 作品一覧へ戻る</button>
+  <div id="work-detail-content"></div>
+</div>
+<script define:vars={{ works }}>
+  const list = document.querySelector('#works-list');
+  const detail = document.querySelector('#work-detail-view');
+  const content = document.querySelector('#work-detail-content');
+  let returnFocus;
+  const openWork = (id, trigger) => {
+    const work = works.find((item) => item.id === id);
+    if (!work || !list || !detail || !content) return;
+    returnFocus = trigger;
+    content.innerHTML = `<h1 class="detail-title">${work.title}</h1><div class="detail-meta-bar"><span>制作年: ${work.year}</span><span>担当: ${work.role}</span></div><div class="work-detail-image">${work.svg}</div><div class="detail-body">${work.description}</div>`;
+    list.hidden = true;
+    detail.hidden = false;
+    detail.scrollIntoView({ behavior: 'smooth' });
+    requestAnimationFrame(() => document.querySelector('[data-work-close]')?.focus());
+  };
+  const closeWork = () => {
+    if (!list || !detail) return;
+    detail.hidden = true;
+    list.hidden = false;
+    document.querySelector('#works')?.scrollIntoView({ behavior: 'smooth' });
+    requestAnimationFrame(() => returnFocus?.focus());
+  };
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    const card = target.closest('[data-work-id]');
+    const hero = target.closest('[data-hero-work]');
+    const trigger = card || hero;
+    if (card) openWork(card.dataset.workId, trigger);
+    if (hero) openWork(hero.dataset.heroWork, trigger);
+  });
+  list?.addEventListener('keydown', (event) => {
+    const card = event.target.closest('[data-work-id]');
+    if (card && (event.key === 'Enter' || event.key === ' ')) {
+      event.preventDefault();
+      openWork(card.dataset.workId, card);
+    }
+  });
+  document.querySelector('[data-work-close]')?.addEventListener('click', closeWork);
+</script>

@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import WorkGallery from '../components/WorkGallery.astro';
+import ArticleList from '../components/ArticleList.astro';
+import { works } from '../data/works';
+
+interface ArticleFrontmatter { title: string; date: string; category: string; summary: string; }
+const articleModules = import.meta.glob('./news/*.md', { eager: true, import: 'frontmatter' }) as Record<string, ArticleFrontmatter>;
+const articles = Object.entries(articleModules).map(([path, frontmatter]) => ({ ...frontmatter, slug: path.split('/').pop()?.replace(/\.md$/, '') ?? '' })).sort((a, b) => b.date.localeCompare(a.date));
+const latest = articles[0];
+const base = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+---
+<Layout>
+  <section class="hero">
+    <div class="hero-left">
+      <span class="hero-badge">Web Design & Frontend Student</span>
+      <h1 class="hero-title">小さな気づきを、<br />使えるかたちに。</h1>
+      <p class="hero-description">慶應太郎（Taro Keio）のWeb制作・思考記録ポートフォリオです。UIデザイン、写真、身の回りの小さな課題を解決するプロダクトを学んでいます。</p>
+      <div class="hero-actions"><a href={`${base}#works`} class="btn btn-primary">作品を見る</a><a href={`${base}#articles`} class="btn btn-secondary">記事を読む</a></div>
+      {latest && <a class="hero-preview-bar" href={`${base}news/${latest.slug}/`}><span class="hero-preview-text"><strong>最新の制作記録：</strong> 「{latest.title}」</span><span class="hero-read-link">読む →</span></a>}
+    </div>
+    <div class="hero-right">
+      <button class="hero-cover" type="button" data-hero-work="machi-no-yohaku" title="代表作品「まちの余白」の詳細を見る">
+        <span class="hero-cover-tag">代表作品：まちの余白</span><span class="hero-cover-svg" set:html={works[0].svg}></span>
+      </button>
+    </div>
+  </section>
+
+  <section id="works"><div class="section-header"><h2 class="section-title">作品</h2><p class="section-desc">課題発見からUIデザイン、実装まで手がけたプロトタイプ</p></div><WorkGallery /></section>
+  <section id="profile"><div class="section-header"><h2 class="section-title">プロフィール</h2><p class="section-desc">人物像と学びの領域</p></div><div class="profile-container"><div><div class="profile-section-title">About</div><p class="profile-text">Webデザインとフロントエンド技術を学ぶ大学生。日頃の生活で感じた「不便」や「美しさ」への気づきを出発点に、手にとるように自然に使えるUI制作を追求しています。趣味は街歩きとフィルムスナップ撮影。</p></div><div><div class="profile-section-title">Skills & Learning</div><div class="skill-group"><span class="skill-label">できること</span><ul class="skill-list"><li class="skill-item">HTML / CSS (CSS Grid, Flexbox)</li><li class="skill-item">JavaScript (Vanilla)</li><li class="skill-item">UIデザイン (Figma)</li><li class="skill-item">写真撮影・レタッチ</li></ul></div><div><span class="skill-label">学んでいること</span><ul class="skill-list"><li class="skill-item">Astro / Markdown制作</li><li class="skill-item">Webアクセシビリティ</li><li class="skill-item">ヘッドレスCMS (microCMS)</li></ul></div></div></div></section>
+  <section id="articles"><ArticleList articles={articles} /></section>
+  <section id="contact"><div class="section-header"><h2 class="section-title">連絡先</h2><p class="section-desc">お問い合わせ・フィードバック</p></div><div class="contact-box"><div class="contact-placeholder-title">Google フォームを埋め込むエリア</div><p class="contact-placeholder-desc">※ 授業用のプロトタイプのため、現在フォームは接続されていません。公開時にはここに問合せフォームが表示されます。</p></div></section>
+</Layout>

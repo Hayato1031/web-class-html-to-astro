@@ -1,0 +1,16 @@
+---
+const base = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+---
+<header class="header">
+  <div class="nav-container">
+    <a href={`${base}#top`} class="site-logo">Taro Keio <span>ポートフォリオ</span></a>
+    <nav aria-label="メインナビゲーション">
+      <ul class="nav-links">
+        <li><a href={`${base}#works`} class="nav-link">作品</a></li>
+        <li><a href={`${base}#profile`} class="nav-link">プロフィール</a></li>
+        <li><a href={`${base}#articles`} class="nav-link">記事</a></li>
+        <li><a href={`${base}#contact`} class="nav-link">連絡先</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>

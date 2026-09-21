@@ -1,0 +1,16 @@
+---
+import Layout from './Layout.astro';
+const { title, date, category, summary } = Astro.props.frontmatter;
+const base = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+---
+<Layout title={`${title} - Taro Keio`}>
+  <section class="news-detail-page">
+    <div class="detail-view active">
+      <a class="back-btn" href={`${base}news/`}>← 記事一覧へ戻る</a>
+      <div class="article-meta"><span class="article-category">{category}</span><time datetime={date}>{date}</time></div>
+      <h1 class="detail-title">{title}</h1>
+      <p class="article-summary news-summary">{summary}</p>
+      <div class="detail-body"><slot /></div>
+    </div>
+  </section>
+</Layout>

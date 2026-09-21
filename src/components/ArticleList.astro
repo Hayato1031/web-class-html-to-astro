@@ -1,0 +1,40 @@
+---
+interface Article {
+  slug: string;
+  title: string;
+  date: string;
+  category: string;
+  summary: string;
+}
+interface Props { articles: Article[]; showHeading?: boolean; }
+const { articles, showHeading = true } = Astro.props;
+const base = `${import.meta.env.BASE_URL.replace(/\/+$/, '')}/`;
+---
+{showHeading && <div class="section-header"><h2 class="section-title">記事</h2><p class="section-desc">デザインの試行錯誤とWeb制作のノート</p></div>}
+<div class="filter-bar" aria-label="記事カテゴリ">
+  {['すべて', 'お知らせ', 'デザイン', '制作ノート'].map((category, index) => <button class:list={['filter-btn', { active: index === 0 }]} type="button" aria-pressed={index === 0 ? 'true' : 'false'} data-category={category}>{category}</button>)}
+</div>
+<div class="articles-list" data-articles-list>
+  {articles.map((article) => (
+    <a class="article-card" data-article-category={article.category} href={`${base}news/${article.slug}/`}>
+      <div class="article-main"><div class="article-meta"><span class="article-category">{article.category}</span><time datetime={article.date}>{article.date}</time></div><h3 class="article-title">{article.title}</h3><p class="article-summary">{article.summary}</p></div><div class="article-arrow" aria-hidden="true">→</div>
+    </a>
+  ))}
+</div>
+<script>
+  document.querySelectorAll('.filter-bar').forEach((bar) => {
+    const list = bar.nextElementSibling;
+    bar.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-category]');
+      if (!button || !list) return;
+      bar.querySelectorAll('[data-category]').forEach((item) => {
+        const isActive = item === button;
+        item.classList.toggle('active', isActive);
+        item.setAttribute('aria-pressed', String(isActive));
+      });
+      list.querySelectorAll('[data-article-category]').forEach((article) => {
+        article.hidden = button.dataset.category !== 'すべて' && article.dataset.articleCategory !== button.dataset.category;
+      });
+    });
+  });
+</script>

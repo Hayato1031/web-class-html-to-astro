@@ -1,0 +1,8 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ArticleList from '../../components/ArticleList.astro';
+interface ArticleFrontmatter { title: string; date: string; category: string; summary: string; }
+const articleModules = import.meta.glob('./*.md', { eager: true, import: 'frontmatter' }) as Record<string, ArticleFrontmatter>;
+const articles = Object.entries(articleModules).map(([path, frontmatter]) => ({ ...frontmatter, slug: path.split('/').pop()?.replace(/\.md$/, '') ?? '' })).sort((a, b) => b.date.localeCompare(a.date));
+---
+<Layout title="記事 - Taro Keio"><section class="news-index"><ArticleList articles={articles} /></section></Layout>
