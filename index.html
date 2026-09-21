@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taro Keio — Portfolio</title>
+    <style>
+        :root {
+            --bg-color: #FAF8F5;
+            --card-bg: #FFFFFF;
+            --card-subtle: #F3EFEA;
+            --text-primary: #24211D;
+            --text-muted: #6C665F;
+            --accent-terracotta: #C45535;
+            --accent-light: #F7EAE3;
+            --border-color: #E6DFD5;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "YakuHanJP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+            --font-serif: "Shippori Mincho", "Yu Mincho", "Georgia", serif;
+            --max-width: 1080px;
+            --radius: 8px;
+            --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 16px;
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(250, 248, 245, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .site-logo {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+        }
+
+        .site-logo span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-left: 0.5rem;
+            font-family: var(--font-sans);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.75rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-terracotta);
+        }
+
+        .main-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 1.5rem 3rem;
+            width: 100%;
+            flex-grow: 1;
+        }
+
+        section {
+            padding-top: 3rem;
+            scroll-margin-top: 5rem;
+        }
+
+        /* ボタンのスタイル定義 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.65rem 1.25rem;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: pointer;
+            text-decoration: none;
+            line-height: 1.2;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-terracotta);
+            color: #FFFFFF;
+            border: 1px solid var(--accent-terracotta);
+            box-shadow: 0 2px 4px rgba(196, 85, 53, 0.15);
+        }
+
+        .btn-primary:hover {
+            background-color: #B0472A;
+            border-color: #B0472A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(196, 85, 53, 0.25);
+        }
+
+        .btn-secondary {
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--card-subtle);
+            border-color: var(--text-muted);
+            transform: translateY(-2px);
+        }
+
+        .hero {
+            padding-top: 2rem;
+            padding-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding-top: 1.5rem;
+                padding-bottom: 1rem;
+            }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent-terracotta);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: clamp(1.8rem, 4.5vw, 2.75rem);
+            font-weight: 600;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .hero-description {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            max-width: 36rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Hero Preview Bar */
+        .hero-preview-bar {
+            margin-top: 1.5rem;
+            padding: 0.85rem 1.25rem;
+            background-color: var(--card-subtle);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            border-left: 3px solid var(--accent-terracotta);
+            transition: var(--transition);
+        }
+
+        .hero-preview-bar:hover {
+            background-color: var(--accent-light);
+        }
+
+        .hero-preview-text {
+            font-size: 0.825rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .hero-preview-text strong {
+            color: var(--text-primary);
+        }
+
+        /* Hero Feature Image */
+        .hero-cover {
+            width: 100%;
+            height: 260px;
+            background-color: var(--card-subtle);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .hero-cover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -6px rgba(0,0,0,0.06);
+            border-color: var(--accent-terracotta);
+        }
+
+        .hero-cover-tag {
+            position: absolute;
+            top: 0.75rem;
+            left: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(4px);
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Section Header */
+        .section-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 1.75rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title::after {
+            content: "";
+            height: 1px;
+            flex-grow: 1;
+            background-color: var(--border-color);
+        }
+
+        .section-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Works Section Layout (Editorial Grid) */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+        }
+
+        .work-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .work-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.08);
+        }
+
+        .work-card:nth-child(1) {
+            grid-column: span 12;
+        }
+
+        .work-card:nth-child(2) {
+            grid-column: span 6;
+        }
+
+        .work-card:nth-child(3) {
+            grid-column: span 6;
+        }
+
+        @media (max-width: 768px) {
+            .work-card:nth-child(1),
+            .work-card:nth-child(2),
+            .work-card:nth-child(3) {
+                grid-column: span 12;
+            }
+        }
+
+        .work-thumb {
+            width: 100%;
+            height: 220px;
+            background-color: var(--card-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .work-card:nth-child(1) .work-thumb {
+            height: 280px;
+        }
+
+        .work-thumb svg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .work-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex-grow: 1;
+        }
+
+        .work-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .work-tag {
+            color: var(--accent-terracotta);
+            font-weight: 500;
+        }
+
+        .work-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+
+        .work-summary {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Profile Section */
+        .profile-container {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 2.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
+        }
+
+        .profile-text {
+            font-size: 0.975rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .profile-section-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent-terracotta);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .skill-list {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .skill-item {
+            font-size: 0.825rem;
+            padding: 0.35rem 0.75rem;
+            background-color: var(--card-subtle);
+            border-radius: 4px;
+            color: var(--text-primary);
+        }
+
+        /* Articles Section */
+        .filter-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            font-size: 0.85rem;
+            padding: 0.4rem 1rem;
+            border-radius: 9999px;
+            background-color: var(--card-subtle);
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--text-primary);
+            color: #FFFFFF;
+        }
+
+        .articles-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .article-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+
+        .article-card:hover {
+            border-color: var(--accent-terracotta);
+            transform: translateX(4px);
+        }
+
+        .article-main {
+            flex-grow: 1;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .article-category {
+            background-color: var(--accent-light);
+            color: var(--accent-terracotta);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .article-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .article-summary {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .article-arrow {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            transition: var(--transition);
+            padding-top: 0.25rem;
+        }
+
+        .article-card:hover .article-arrow {
+            color: var(--accent-terracotta);
+            transform: translateX(4px);
+        }
+
+        /* Detail View Layout (Used for both Works and Articles) */
+        .detail-view {
+            display: none;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+            margin-top: 1.5rem;
+            animation: fadeIn 0.3s ease-out;
+            scroll-margin-top: 5rem;
+        }
+
+        .detail-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--accent-terracotta);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .back-btn:hover {
+            transform: translateX(-4px);
+        }
+
+        .detail-title {
+            font-family: var(--font-serif);
+            font-size: clamp(1.5rem, 3vw, 2.25rem);
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+        }
+
+        .detail-meta-bar {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        .detail-body {
+            font-size: 1rem;
+            line-height: 1.85;
+            color: var(--text-primary);
+        }
+
+        .detail-body h2 {
+            font-family: var(--font-serif);
+            font-size: 1.35rem;
+            margin: 2rem 0 1rem;
+            color: var(--text-primary);
+            border-left: 3px solid var(--accent-terracotta);
+            padding-left: 0.75rem;
+        }
+
+        .detail-body p {
+            margin-bottom: 1.25rem;
+        }
+
+        .detail-body ul {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+
+        .detail-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Contact Section */
+        .contact-box {
+            background-color: var(--card-bg);
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius);
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .contact-placeholder-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-placeholder-desc {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            max-width: 28rem;
+            margin: 0 auto;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            background-color: var(--bg-color);
+        }
+
+        .footer-note {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="nav-container">
+            <a href="#top" class="site-logo">Taro Keio <span>ポートフォリオ</span></a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#works" class="nav-link">作品</a></li>
+                    <li><a href="#profile" class="nav-link">プロフィール</a></li>
+                    <li><a href="#articles" class="nav-link">記事</a></li>
+                    <li><a href="#contact" class="nav-link">連絡先</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-container" id="top">
+        <section class="hero">
+            <div class="hero-left">
+                <span class="hero-badge">Web Design & Frontend Student</span>
+                <h1 class="hero-title">小さな気づきを、<br>使えるかたちに。</h1>
+                <p class="hero-description">
+                    慶應太郎（Taro Keio）のWeb制作・思考記録ポートフォリオです。UIデザイン、写真、身の回りの小さな課題を解決するプロダクトを学んでいます。
+                </p>
+                <div class="hero-actions">
+                    <a href="#works" class="btn btn-primary">作品を見る</a>
+                    <a href="#articles" class="btn btn-secondary">記事を読む</a>
+                </div>
+
+                <div class="hero-preview-bar" id="hero-latest-bar" style="cursor: pointer;" onclick="openLatestArticle()">
+                    <div class="hero-preview-text">
+                        <strong>最新の制作記録：</strong> <span id="hero-latest-title">読み込み中...</span>
+                    </div>
+                    <span style="font-size: 0.85rem; color: var(--accent-terracotta); font-weight: 500; shrink: 0;">読む →</span>
+                </div>
+            </div>
+
+            <div class="hero-right">
+                <div class="hero-cover" onclick="openWorkDetail('machi-no-yohaku')" title="代表作品「まちの余白」の詳細を見る">
+                    <span class="hero-cover-tag">代表作品：まちの余白</span>
+                    <svg viewBox="0 0 800 400" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="800" height="400" fill="#F3EFEA"/>
+                        <circle cx="200" cy="200" r="120" fill="#E6DFD5" opacity="0.6"/>
+                        <path d="M150,250 Q280,100 450,220 T700,180" fill="none" stroke="#C45535" stroke-width="4" stroke-dasharray="8 8"/>
+                        <circle cx="450" cy="220" r="12" fill="#C45535"/>
+                        <circle cx="450" cy="220" r="24" fill="none" stroke="#C45535" stroke-width="2" opacity="0.5"/>
+                        <rect x="520" y="80" width="200" height="140" rx="8" fill="#FFFFFF"/>
+                        <rect x="540" y="110" width="120" height="12" rx="4" fill="#24211D"/>
+                        <rect x="540" y="135" width="160" height="8" rx="4" fill="#6C665F" opacity="0.5"/>
+                        <rect x="540" y="150" width="90" height="8" rx="4" fill="#6C665F" opacity="0.3"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <section id="works">
+            <div class="section-header">
+                <h2 class="section-title">作品</h2>
+                <p class="section-desc">課題発見からUIデザイン、実装まで手がけたプロトタイプ</p>
+            </div>
+
+            <!-- List View -->
+            <div id="works-list" class="works-grid"></div>
+
+            <!-- Detail View -->
+            <div id="work-detail-view" class="detail-view">
+                <button class="back-btn" onclick="closeWorkDetail()">← 作品一覧へ戻る</button>
+                <div id="work-detail-content"></div>
+            </div>
+        </section>
+
+        <section id="profile">
+            <div class="section-header">
+                <h2 class="section-title">プロフィール</h2>
+                <p class="section-desc">人物像と学びの領域</p>
+            </div>
+            <div class="profile-container">
+                <div>
+                    <div class="profile-section-title">About</div>
+                    <p class="profile-text">
+                        Webデザインとフロントエンド技術を学ぶ大学生。日頃の生活で感じた「不便」や「美しさ」への気づきを出発点に、手にとるように自然に使えるUI制作を追求しています。趣味は街歩きとフィルムスナップ撮影。
+                    </p>
+                </div>
+                <div>
+                    <div class="profile-section-title">Skills & Learning</div>
+                    <div style="margin-bottom: 1.25rem;">
+                        <span style="font-size: 0.85rem; font-weight: 600;">できること</span>
+                        <ul class="skill-list">
+                            <li class="skill-item">HTML / CSS (CSS Grid, Flexbox)</li>
+                            <li class="skill-item">JavaScript (Vanilla)</li>
+                            <li class="skill-item">UIデザイン (Figma)</li>
+                            <li class="skill-item">写真撮影・レタッチ</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span style="font-size: 0.85rem; font-weight: 600;">学んでいること</span>
+                        <ul class="skill-list">
+                            <li class="skill-item">Astro / Markdown制作</li>
+                            <li class="skill-item">Webアクセシビリティ</li>
+                            <li class="skill-item">ヘッドレスCMS (microCMS)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="articles">
+            <div class="section-header">
+                <h2 class="section-title">記事</h2>
+                <p class="section-desc">デザインの試行錯誤とWeb制作のノート</p>
+            </div>
+
+            <div id="articles-list-container">
+                <!-- Filter Buttons -->
+                <div class="filter-bar">
+                    <button class="filter-btn active" onclick="filterArticles('すべて')">すべて</button>
+                    <button class="filter-btn" onclick="filterArticles('お知らせ')">お知らせ</button>
+                    <button class="filter-btn" onclick="filterArticles('デザイン')">デザイン</button>
+                    <button class="filter-btn" onclick="filterArticles('制作ノート')">制作ノート</button>
+                </div>
+
+                <!-- Articles List -->
+                <div id="articles-list" class="articles-list"></div>
+            </div>
+
+            <!-- Article Detail View -->
+            <div id="article-detail-view" class="detail-view">
+                <button class="back-btn" onclick="closeArticleDetail()">← 記事一覧へ戻る</button>
+                <div id="article-detail-content"></div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="section-header">
+                <h2 class="section-title">連絡先</h2>
+                <p class="section-desc">お問い合わせ・フィードバック</p>
+            </div>
+            <div class="contact-box">
+                <div class="contact-placeholder-title">Google フォームを埋め込むエリア</div>
+                <p class="contact-placeholder-desc">
+                    ※ 授業用のプロトタイプのため、現在フォームは接続されていません。公開時にはここに問合せフォームが表示されます。
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p class="footer-note">授業用サンプル・架空の人物（慶應太郎 / Taro Keio）</p>
+    </footer>
+
+    <script>
+        /* ----------------------------------------------------
+           データ分離構造（Astro / Markdown / microCMS 移植用の定義）
+           ---------------------------------------------------- */
+        
+        // 作品データ
+        const worksData = [
+            {
+                id: "machi-no-yohaku",
+                title: "まちの余白",
+                year: "2026",
+                role: "UIデザイン / フロントエンド",
+                summary: "都市の中にある「ベンチ」や「小さな広場」など、ひとやすみできる余白スポットを共有・検索する回遊マップUIプロトタイプ。",
+                description: `
+                    <p>「まちの余白」は、都市を歩く中で見つけた「誰もが少し休める場所」を地図上に可視化するWebプロトタイプです。</p>
+                    <h2>制作の背景</h2>
+                    <p>目的地へ最短で移動することだけが重視されがちな街歩きの中で、偶発的な休憩や佇む時間を楽しめるインターフェースを目指しました。</p>
+                    <h2>工夫したポイント</h2>
+                    <ul>
+                        <li>情報量を極限まで絞り込み、視覚的なノイズを減らしたマップデザイン</li>
+                        <li>時間帯ごとの「日陰」「静かさ」の印象をアイコンと温かみのあるカラーで表現</li>
+                        <li>モバイル端末で片手操作しやすい下部ナビゲーションシート</li>
+                    </ul>
+                `,
+                svg: `<svg viewBox="0 0 800 400" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="800" height="400" fill="#F3EFEA"/>
+                    <circle cx="200" cy="200" r="120" fill="#E6DFD5" opacity="0.6"/>
+                    <path d="M150,250 Q280,100 450,220 T700,180" fill="none" stroke="#C45535" stroke-width="4" stroke-dasharray="8 8"/>
+                    <circle cx="450" cy="220" r="12" fill="#C45535"/>
+                    <circle cx="450" cy="220" r="24" fill="none" stroke="#C45535" stroke-width="2" opacity="0.5"/>
+                    <rect x="520" y="80" width="200" height="140" rx="8" fill="#FFFFFF" shadow="0 4px 12px rgba(0,0,0,0.05)"/>
+                    <rect x="540" y="110" width="120" height="12" rx="4" fill="#24211D"/>
+                    <rect x="540" y="135" width="160" height="8" rx="4" fill="#6C665F" opacity="0.5"/>
+                    <rect x="540" y="150" width="90" height="8" rx="4" fill="#6C665F" opacity="0.3"/>
+                </svg>`
+            },
+            {
+                id: "akari-no-rhythm",
+                title: "灯りのリズム",
+                year: "2025",
+                role: "フロントエンド / 実験",
+                summary: "Web Audio APIとキャンバス表現を組み合わせ、音と光の揺らぎをインタラクティブに体感できるWebキャンバスワーク。",
+                description: `
+                    <p>画面へのタッチやクリックに合わせて、光の輪が波紋のように広がり、心地よいトーンが響くデジタルプロトタイプです。</p>
+                    <h2>制作の背景</h2>
+                    <p>スクリーンタイムが増える日常の中で、画面と対峙する時間を少しだけ穏やかにするための「意味のない、ただ心地よい時間」を提供する目的で作りました。</p>
+                    <h2>技術的アプローチ</h2>
+                    <ul>
+                        <li>HTML5 Canvas を用いたスムーズなパーティクル描画</li>
+                        <li>Tone.jsの思想を参考にしたシンプルなオシレーター音階生成</li>
+                    </ul>
+                `,
+                svg: `<svg viewBox="0 0 600 400" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="600" height="400" fill="#1F1D1B"/>
+                    <circle cx="300" cy="200" r="90" fill="url(#grad1)" opacity="0.8"/>
+                    <circle cx="300" cy="200" r="140" fill="none" stroke="#F7EAE3" stroke-width="1" opacity="0.3"/>
+                    <circle cx="220" cy="150" r="40" fill="url(#grad2)" opacity="0.6"/>
+                    <defs>
+                        <radialGradient id="grad1" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#F7EAE3" />
+                            <stop offset="100%" stop-color="#C45535" stop-opacity="0" />
+                        </radialGradient>
+                        <radialGradient id="grad2" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#C45535" />
+                            <stop offset="100%" stop-color="#1F1D1B" stop-opacity="0" />
+                        </radialGradient>
+                    </defs>
+                </svg>`
+            },
+            {
+                id: "ichinichi-ichimai",
+                title: "一日一枚",
+                year: "2025",
+                role: "デザイン / 実装",
+                summary: "毎日撮影した写真を1枚だけ厳選して掲載するミニマルな写真記録Webアーカイブ。",
+                description: `
+                    <p>SNSのようにタイムラインを流し見するのではなく、1枚の写真と数行の短い言葉に集中できる個人ギャラリーサイトです。</p>
+                    <h2>デザインの意図</h2>
+                    <p>余白を最大限に活かし、写真が持っている色合いや雰囲気を壊さないトーン（アイボリーとダークグレー）で構築しています。</p>
+                `,
+                svg: `<svg viewBox="0 0 600 400" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="600" height="400" fill="#EAE5DE"/>
+                    <rect x="150" y="60" width="300" height="250" fill="#FFFFFF" rx="4"/>
+                    <rect x="170" y="80" width="260" height="180" fill="#D8D0C5"/>
+                    <circle cx="300" cy="170" r="35" fill="#24211D" opacity="0.2"/>
+                    <rect x="170" y="275" width="100" height="10" rx="3" fill="#6C665F" opacity="0.4"/>
+                </svg>`
+            }
+        ];
+
+        // 記事データ（追加・編集しやすいフォーマット）
+        const articlesData = [
+            {
+                id: "work-page-review",
+                slug: "work-page-review",
+                title: "作品ページを見直した記録",
+                date: "2026-09-21",
+                category: "制作ノート",
+                summary: "作品の見せ方と説明文を見直し、初めて訪れた人が制作意図を理解しやすくしました。",
+                body: `
+                    <p>これまでに制作したプロトタイプ作品の掲載方法を見直し、作品一覧と詳細ページの情報構造を整理しました。</p>
+                    <h2>見直したこと</h2>
+                    <p>作品カードに制作年と担当役割を明記し、作品詳細を開かなくても概要が掴めるようにしました。また、単にスクリーンショットを並べるだけでなく、どのような課題背景やコンセプトから制作を開始したのかを文章で丁寧に説明する構成に変更しています。</p>
+                    <h2>次に試すこと</h2>
+                    <p>作品ごとのデザインシステム（カラーパレットやフォントの選定理由）を補足するセクションを追加し、コンポーネント単位での設計思考も伝わるようにブラッシュアップする予定です。</p>
+                `
+            },
+            {
+                id: "portfolio-release",
+                slug: "portfolio-release",
+                title: "はじめてのポートフォリオを公開しました",
+                date: "2026-09-18",
+                category: "お知らせ",
+                summary: "Webデザインとフロントエンド制作の記録をまとめるため、ポートフォリオサイトを開設しました。",
+                body: `
+                    <p>大学のWeb制作の授業の一環として、個人のポートフォリオサイトを作成し公開しました。</p>
+                    <h2>ポートフォリオを作った目的</h2>
+                    <p>これまで作った課題や個人の実験的なWeb制作物を、一箇所に整理して見せられる場所が必要だと感じていました。単なる作品集にとどまらず、どのような思考プロセスで制作したかという「制作ノート」も残せる構成にしています。</p>
+                    <h2>今後の予定</h2>
+                    <p>まずはプロトタイプとしてHTML/CSS/JSで構築しましたが、今後はAstroを用いたSSG（静的サイト生成）化や、microCMSとの連携を取り入れて記事更新を効率化していく予定です。</p>
+                `
+            },
+            {
+                id: "color-from-photos",
+                slug: "color-from-photos",
+                title: "写真から配色を考える",
+                date: "2026-09-12",
+                category: "デザイン",
+                summary: "趣味のフィルム写真で撮影した街の風景からカラーパレットを抽出し、Webサイトの基調色に活かすアプローチについて。",
+                body: `
+                    <p>Webサイトのデザインを考えるとき、カラーパレットの決定に迷うことがよくあります。最近は自分が日常の中で撮影した写真から配色ヒントを得る試みをしています。</p>
+                    <h2>街の写真から見つける自然なコントラスト</h2>
+                    <p>例えば、古いレンガの建物と秋の青空、使い込まれた木製家具と真鍮のアクセント。自然光の中で調和している色は、Web画面上に置いても目が疲れにくく、独特の空気感を演出してくれます。</p>
+                    <h2>抽出のステップ</h2>
+                    <ul>
+                        <li>写真を一度小さくぼかしてメインの色域を特定する</li>
+                        <li>ベースカラー（70%）、メインカラー（25%）、アクセントカラー（5%）に分類する</li>
+                        <li>Webアクセシビリティ基準（WCAG）のコントラスト比を満たすかチェックする</li>
+                    </ul>
+                    <p>このポートフォリオのテラコッタ色も、夕方の街角で見た日陰と夕日の対比からインスピレーションを受けています。</p>
+                `
+            },
+            {
+                id: "astro-preparation",
+                slug: "astro-preparation",
+                title: "Astroで記事を管理する準備",
+                date: "2026-09-05",
+                category: "制作ノート",
+                summary: "HTMLのプロトタイプからAstroのコンテンツコレクションへ移植するためのディレクトリ構造やMarkdownの設計メモ。",
+                body: `
+                    <p>現在のポートフォリオは単一のHTMLファイルで動かしていますが、記事や作品の数が増えてくるとHTMLを直接編集するのは大変になります。そこで、Astroフレームワークへの移行準備を進めています。</p>
+                    <h2>なぜAstroを選ぶのか</h2>
+                    <p>Astroは不要なJavaScriptを発行せず、高速なWebサイトを構築できる静的サイトジェネレーターです。Markdown（.md）やMDXを使って記事を書くことができるため、執筆に集中できるメリットがあります。</p>
+                    <h2>検討中のデータ構造</h2>
+                    <p>記事データには以下のようなFrontmatterを定義して管理する予定です。</p>
+                    <p><code>---<br>title: "記事タイトル"<br>pubDate: 2026-09-05<br>category: "制作ノート"<br>summary: "概要テキスト"<br>---</code></p>
+                    <p>次回は実際にAstroのプロジェクトを立ち上げ、このHTMLのデザインをコンポーネント分割して移植する手順を記録します。</p>
+                `
+            }
+        ];
+
+        // 日付降順にソートする処理
+        function getSortedArticles() {
+            return [...articlesData].sort((a, b) => new Date(b.date) - new Date(a.date));
+        }
+
+        // 作品一覧のレンダリング
+        function renderWorks() {
+            const container = document.getElementById('works-list');
+            if (!container) return;
+
+            container.innerHTML = worksData.map(work => `
+                <article class="work-card" onclick="openWorkDetail('${work.id}')">
+                    <div class="work-thumb">
+                        ${work.svg}
+                    </div>
+                    <div class="work-content">
+                        <div class="work-meta">
+                            <span class="work-tag">${work.year}</span>
+                            <span>・</span>
+                            <span>${work.role}</span>
+                        </div>
+                        <h3 class="work-title">${work.title}</h3>
+                        <p class="work-summary">${work.summary}</p>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // 作品詳細を開く
+        function openWorkDetail(id) {
+            const work = worksData.find(w => w.id === id);
+            if (!work) return;
+
+            const detailView = document.getElementById('work-detail-view');
+            const detailContent = document.getElementById('work-detail-content');
+            const listView = document.getElementById('works-list');
+
+            detailContent.innerHTML = `
+                <h1 class="detail-title">${work.title}</h1>
+                <div class="detail-meta-bar">
+                    <span>制作年: ${work.year}</span>
+                    <span>担当: ${work.role}</span>
+                </div>
+                <div style="max-width: 100%; height: 300px; margin-bottom: 2rem; border-radius: var(--radius); overflow: hidden; background: var(--card-subtle);">
+                    ${work.svg}
+                </div>
+                <div class="detail-body">
+                    ${work.description}
+                </div>
+            `;
+
+            listView.style.display = 'none';
+            detailView.classList.add('active');
+            detailView.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 作品詳細を閉じる
+        function closeWorkDetail() {
+            const detailView = document.getElementById('work-detail-view');
+            const listView = document.getElementById('works-list');
+
+            detailView.classList.remove('active');
+            listView.style.display = 'grid';
+            
+            // 作品セクションのトップへヘッダー被りなくスクロール
+            document.getElementById('works').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 記事一覧のレンダリング
+        let currentCategory = 'すべて';
+
+        function renderArticles() {
+            const container = document.getElementById('articles-list');
+            const sorted = getSortedArticles();
+            const filtered = currentCategory === 'すべて' 
+                ? sorted 
+                : sorted.filter(a => a.category === currentCategory);
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted); padding: 1rem;">該当する記事がありません。</p>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(article => `
+                <article class="article-card" onclick="openArticleDetail('${article.id}')">
+                    <div class="article-main">
+                        <div class="article-meta">
+                            <span class="article-category">${article.category}</span>
+                            <time>${article.date}</time>
+                        </div>
+                        <h3 class="article-title">${article.title}</h3>
+                        <p class="article-summary">${article.summary}</p>
+                    </div>
+                    <div class="article-arrow">→</div>
+                </article>
+            `).join('');
+        }
+
+        // トップヒーローの最新記事表示の更新
+        function initHeroLatestArticle() {
+            const sorted = getSortedArticles();
+            if (sorted.length > 0) {
+                const latest = sorted[0];
+                const titleEl = document.getElementById('hero-latest-title');
+                if (titleEl) {
+                    titleEl.textContent = `「${latest.title}」`;
+                }
+            }
+        }
+
+        // 最新記事を開く
+        function openLatestArticle() {
+            const sorted = getSortedArticles();
+            if (sorted.length > 0) {
+                openArticleDetail(sorted[0].id);
+            }
+        }
+
+        // カテゴリフィルター
+        function filterArticles(category) {
+            currentCategory = category;
+            
+            // ボタンのUI切替
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.innerText === category) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            closeArticleDetail();
+            renderArticles();
+        }
+
+        // 記事詳細を開く
+        function openArticleDetail(id) {
+            const article = articlesData.find(a => a.id === id);
+            if (!article) return;
+
+            const detailView = document.getElementById('article-detail-view');
+            const detailContent = document.getElementById('article-detail-content');
+            const listContainer = document.getElementById('articles-list-container');
+
+            detailContent.innerHTML = `
+                <div class="article-meta" style="margin-bottom: 0.75rem;">
+                    <span class="article-category">${article.category}</span>
+                    <time>${article.date}</time>
+                </div>
+                <h1 class="detail-title">${article.title}</h1>
+                <div class="detail-body">
+                    ${article.body}
+                </div>
+            `;
+
+            listContainer.style.display = 'none';
+            detailView.classList.add('active');
+            detailView.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 記事詳細を閉じる
+        function closeArticleDetail() {
+            const detailView = document.getElementById('article-detail-view');
+            const listContainer = document.getElementById('articles-list-container');
+
+            detailView.classList.remove('active');
+            listContainer.style.display = 'block';
+
+            // 記事セクションのトップへヘッダー被りなくスクロール
+            document.getElementById('articles').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 初期化処理
+        window.addEventListener('DOMContentLoaded', () => {
+            renderWorks();
+            renderArticles();
+            initHeroLatestArticle();
+        });
+    </script>
+</body>
+</html>
